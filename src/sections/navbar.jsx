@@ -7,14 +7,21 @@ import {
   Tooltip,
   useColorMode,
   useColorModeValue,
+  Box,
 } from "@chakra-ui/react";
-import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { SunIcon, MoonIcon, LockIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import config from "../config";
+import { useRef } from "react";
+import { useDisclosure } from "@chakra-ui/react";
+import PostCollectionModal from "./PostCollectionModal";
+import useFirebaseAuth from "../hooks/useFirebaseAuth";
 
 const Navbar = () => {
   const { toggleColorMode } = useColorMode();
   const colorModeIcon = useColorModeValue(<SunIcon />, <MoonIcon />);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { loginWithGoogle, user } = useFirebaseAuth();
 
   return (
     <Flex
@@ -28,15 +35,35 @@ const Navbar = () => {
         {config.title}
       </Heading>
       <HStack spacing={2}>
-        <Tooltip hasArrow label="Post a new NFT collecltion">
+        <Tooltip hasArrow label="Login">
           <Button
-            size="sm"
-            bg={"red.500"}
+            size={"sm"}
+            bg="red.500"
             fontWeight={"bold"}
             color={"gray.50"}
+            icon={<LockIcon />}
+            onClick={loginWithGoogle}
           >
-            Post Collection
+            Login
           </Button>
+        </Tooltip>
+        <Tooltip hasArrow label="Post a new NFT collecltion">
+          <Box>
+            <Button
+              size="sm"
+              bg={"red.500"}
+              fontWeight={"bold"}
+              color={"gray.50"}
+              onClick={onOpen}
+            >
+              Post Collection
+            </Button>
+            <PostCollectionModal
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+            />
+          </Box>
         </Tooltip>
         <IconButton
           size={"sm"}

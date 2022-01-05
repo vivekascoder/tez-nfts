@@ -96,7 +96,7 @@ const NftList = () => {
     <Flex mt={14} alignItems={"flex-start"} w={"full"}>
       <VStack alignItems={"flex-start"} w={"full"} spacing={4}>
         {db.map((nft) => {
-          return <NftItem nft={nft} />;
+          return <NftItem key={nft.id} nft={nft} />;
         })}
       </VStack>
     </Flex>
